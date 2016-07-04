@@ -1,0 +1,139 @@
+#!/usr/bin/env node
+var knex = require('knex')({
+  client: 'sqlite3',
+  connection: {
+    filename: __dirname + '/dev.sqlite3'
+  },
+  useNullAsDefault: true
+})
+
+
+function listCars() {
+  console.log(knex.select('*').from('todos'))
+}
+
+function logError(err) {
+  console.log('error mate', err)
+}
+
+function getAll() {
+  return knex.select('*').from('todos')
+}
+
+// function getAll () {
+//   return knex.raw('select * from "todos"')
+// }
+
+function searching(find) {
+  var array = find.split(' ')
+  for(var i=0; i<array.length; i++){
+    var findWord = array[i]
+  }
+  return (knex.raw('select * from "todos" where "task" || "id" || "brand" || "color" like "%' + findWord + '%"'))
+}
+
+function listTodos (todos) {
+  todos.forEach(function (todo) {
+    console.log(todo.id + " : " + todo.brand, todo.task, todo.color)
+  })
+}
+
+function closeDB() {
+  knex.destroy()
+}
+
+module.exports = {
+  getAll: getAll,
+  listTodos: listTodos,
+  searching: searching,
+  logError: logError,
+  // addTodo: addTodo
+}
+
+
+
+
+
+
+
+
+
+// var cmd = process.argv[2]
+// var note = process.argv[3]
+// var id = process.argv[3]
+// var find = process.argv[3]
+
+
+// switch (cmd) {
+//   case 'add':
+//     addTodo(note)
+//       .then(getAll)
+//       .then(listTodos)
+//       .catch(logError)
+//       .finally(closeDB)
+//     break
+
+//   case 'list':
+//     getAll()
+//       .then(listTodos)
+//       .catch(logError)
+//       .finally(closeDB)
+//     break
+
+//    case 'delete':
+//     delById(id)
+//       .then(getAll)
+//       .then(listTodos)
+//       .catch(logError)
+//       .finally(closeDB)
+//     break
+
+
+//    case 'search':
+//     searching(find)
+//       .then(listTodos)
+//       .catch(logError)
+//       .finally(closeDB)
+//     break
+
+//   default:
+//     console.log('no matched cases')
+//     closeDB()
+//     break
+// }
+
+// function delById(id){
+//   return knex("todos")
+//     .where("id", id)
+//     .del()
+// }
+
+// function searching(find) {
+//   var array = find.split(' ')
+//   for(var i=0; i<array.length; i++){
+//     var findWord = array[i]
+//   }
+//   return (knex.raw('select * from "todos" where "task" || "id" || "brand" || "color" like "%' + findWord + '%"'))
+// }
+
+// function listTodos (todos) {
+//   todos.forEach(function (todo) {
+//     console.log(todo.id + " : " + todo.brand, todo.task, todo.color)
+//   })
+// }
+
+// function logError (err) {
+//   console.log('Dang, we exploded like a bomb: ', err)
+// }
+// function getAll () {
+//   return knex.raw('select * from "todos"')
+// }
+
+// function addTodo (task) {
+//   return knex.raw('insert into "todos" ("task") values ("' + task + '" );')
+// }
+
+// function closeDB () {
+//   knex.destroy()
+// }
+
